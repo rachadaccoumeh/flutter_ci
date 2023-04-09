@@ -1,37 +1,36 @@
-name: Build and Release
+name: Create Release
 
 on:
   push:
     branches:
-      - master
+      - main
+
 jobs:
-  build-and-release:
+  create_release:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v1.2.0
-
-      - name: Build app
-        run: flutter build apk --release
-
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.8.1'
+      - name: Build APK
+        run: flutter build apk
+      - name: Create Release
+        uses: actions/create-release@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.ref }}
+          tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: This is an automated release for version ${{ github.ref }} of the app.
+          body: |
+            Changes in this release:
+            - Added feature X
+            - Fixed issue Y
           draft: false
           prerelease: false
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: my-app
-          path: build/app/outputs/flutter-apk/app-release.apk
+          # Upload the APK as an asset
+          - name: Upload APK
+            uses: actions/upload-artifact@v2
+            with:
+              name: my-app
+              path: build/app/outputs/flutter-apk/app-release.apk
