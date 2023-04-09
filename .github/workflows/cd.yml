@@ -28,9 +28,9 @@ jobs:
             - Fixed issue Y
           draft: false
           prerelease: false
-          # Upload the APK as an asset
-          - name: Upload APK
-            uses: actions/upload-artifact@v2
-            with:
-              name: my-app
-              path: build/app/outputs/flutter-apk/app-release.apk
+            # Upload the APK as an asset
+            - name: Upload APK
+              uses: actions/upload-artifact@v2
+              with:
+                name: my-app
+                path: build/app/outputs/flutter-apk/app-release.apk
